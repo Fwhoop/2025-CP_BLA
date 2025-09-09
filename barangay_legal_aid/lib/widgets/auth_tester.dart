@@ -1,0 +1,167 @@
+// lib/widgets/auth_tester.dart
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:barangay_legal_aid/services/auth_service.dart';
+
+class AuthTester extends StatefulWidget {
+  const AuthTester({super.key});
+
+  @override
+  State<AuthTester> createState() => _AuthTesterState();
+}
+
+class _AuthTesterState extends State<AuthTester> {
+  final AuthService _authService = AuthService();
+  String _authStatus = 'Not checked';
+  Map<String, String> _userData = {};
+
+  Future<void> _checkAuthStatus() async {
+    final isLoggedIn = await _authService.isLoggedIn();
+    setState(() {
+      _authStatus = isLoggedIn ? 'Logged In' : 'Logged Out';
+    });
+  }
+
+  Future<void> _getUserData() async {
+    final data = await _authService.getUserData();
+    setState(() {
+      _userData = data;
+    });
+  }
+
+  Future<void> _simulateLogin() async {
+    final success = await _authService.login(
+      email: 'test@legalaid.com',
+      password: 'test123',
+      rememberMe: true,
+    );
+    
+    setState(() {
+      _authStatus = success ? 'Login Successful' : 'Login Failed';
+    });
+    
+    if (success) {
+      await _getUserData();
+    }
+  }
+
+  Future<void> _logout() async {
+    await _authService.logout();
+    setState(() {
+      _authStatus = 'Logged Out';
+      _userData = {};
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthStatus();
+    _getUserData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Auth Flow Tester', style: GoogleFonts.roboto()),
+        backgroundColor: Color(0xFF99272D),
+      ),
+      body: Container(
+        color: Color(0xFFFFFFFF),
+        padding: EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildStatusCard(),
+            SizedBox(height: 20),
+            _buildUserDataCard(),
+            SizedBox(height: 20),
+            _buildActionButtons(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusCard() {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Text('Authentication Status', style: GoogleFonts.roboto(
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF36454F),
+            )),
+            SizedBox(height: 10),
+            Text(_authStatus, style: GoogleFonts.roboto(
+              fontWeight: FontWeight.w500,
+              color: _authStatus.contains('Successful') || _authStatus == 'Logged In' 
+                  ? Colors.green 
+                  : Color(0xFF99272D),
+            )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUserDataCard() {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('User Data', style: GoogleFonts.roboto(
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF36454F),
+            )),
+            SizedBox(height: 10),
+            if (_userData.isEmpty)
+              Text('No user data available', style: GoogleFonts.roboto()),
+            ..._userData.entries.map((entry) => Padding(
+              padding: EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  Text('${entry.key}: ', style: GoogleFonts.roboto(fontWeight: FontWeight.w500)),
+                  Expanded(child: Text(entry.value, style: GoogleFonts.roboto())),
+                ],
+              ),
+            )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ElevatedButton(
+          onPressed: _simulateLogin,
+          child: Text('Simulate Login', style: GoogleFonts.roboto()),
+        ),
+        SizedBox(height: 10),
+        ElevatedButton(
+          onPressed: _logout,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF36454F),
+          ),
+          child: Text('Logout', style: GoogleFonts.roboto()),
+        ),
+        SizedBox(height: 10),
+        OutlinedButton(
+          onPressed: _checkAuthStatus,
+          child: Text('Refresh Status', style: GoogleFonts.roboto()),
+        ),
+      ],
+    );
+  }
+}
