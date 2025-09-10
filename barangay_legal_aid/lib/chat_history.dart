@@ -1,4 +1,3 @@
-// lib/chat_history.dart
 import 'package:flutter/material.dart';
 import 'package:barangay_legal_aid/chat_model.dart';
 import 'package:barangay_legal_aid/chat_provider.dart';

@@ -1,4 +1,3 @@
-// lib/screens/signup_page.dart
 import 'package:flutter/material.dart';
 import 'package:barangay_legal_aid/services/auth_service.dart';
 

@@ -1,4 +1,3 @@
-// lib/widgets/auth_tester.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:barangay_legal_aid/services/auth_service.dart';
