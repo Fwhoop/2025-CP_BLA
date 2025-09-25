@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:barangay_legal_aid/services/auth_service.dart';
+import 'package:barangay_legal_aid/models/user_model.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -29,14 +30,20 @@ class _LoginPageState extends State<LoginPage> {
       setState(() => _isLoading = true);
 
       try {
-        final success = await _authService.login(
+        final User? user = await _authService.login(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
           rememberMe: _rememberMe,
         );
 
-        if (success) {
-          Navigator.pushReplacementNamed(context, '/home');
+        if (user != null) {
+          if (user.isSuperAdmin) {
+            Navigator.pushReplacementNamed(context, '/superadmin');
+          } else if (user.isAdmin) {
+            Navigator.pushReplacementNamed(context, '/admin');
+          } else {
+            Navigator.pushReplacementNamed(context, '/home');
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(

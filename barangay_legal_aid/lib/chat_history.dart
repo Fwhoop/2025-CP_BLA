@@ -23,15 +23,17 @@ class ChatHistorySidebar extends StatelessWidget {
               children: [
                 Icon(Icons.chat, color: Color(0xFFFFFFFF)),
                 SizedBox(width: 12),
-                Text(
-                  'Chat History',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFFFFFFF),
+                Expanded(
+                  child: Text(
+                    'Chat History',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFFFFFFF),
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Spacer(),
                 IconButton(
                   icon: Icon(Icons.add, color: Color(0xFFFFFFFF)),
                   onPressed: chatProvider.createNewSession,
@@ -46,7 +48,7 @@ class ChatHistorySidebar extends StatelessWidget {
               itemBuilder: (context, index) {
                 final session = chatProvider.chatSessions[index];
                 final isSelected = chatProvider.currentSession?.id == session.id;
-                
+
                 return Container(
                   margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(

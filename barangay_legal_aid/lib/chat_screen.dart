@@ -84,7 +84,22 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             child: Row(
               children: [
-                Icon(Icons.smart_toy, color: Color(0xFFFFFFFF)),
+                // Replaced icon with text label
+                Container(
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFFFFFF).withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    'BOT',
+                    style: TextStyle(
+                      color: Color(0xFFFFFFFF),
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 SizedBox(width: 12),
                 Text(
                   currentSession?.title ?? 'New Chat',
@@ -103,13 +118,33 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.chat, size: 64, color: Color(0xFF36454F).withOpacity(0.3)),
+                        // Replaced icon with text
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Color(0xFF36454F).withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '💬',
+                            style: TextStyle(fontSize: 32),
+                          ),
+                        ),
                         SizedBox(height: 16),
                         Text(
                           'Start a new conversation',
                           style: TextStyle(
                             fontSize: 18,
                             color: Color(0xFF36454F),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Type a message to begin chatting',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF36454F).withOpacity(0.6),
                           ),
                         ),
                       ],
@@ -158,9 +193,16 @@ class _ChatScreenState extends State<ChatScreen> {
                     color: Color(0xFF99272D),
                     shape: BoxShape.circle,
                   ),
-                  child: IconButton(
-                    icon: Icon(Icons.send, color: Color(0xFFFFFFFF)),
+                  child: TextButton(
                     onPressed: _sendMessage,
+                    child: Text(
+                      'SEND',
+                      style: TextStyle(
+                        color: Color(0xFFFFFFFF),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -192,7 +234,14 @@ class ChatBubble extends StatelessWidget {
               ),
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.smart_toy, color: Color(0xFFFFFFFF), size: 20),
+                child: Text(
+                  'BOT',
+                  style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 radius: 16,
               ),
             ),
@@ -240,7 +289,14 @@ class ChatBubble extends StatelessWidget {
               ),
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(Icons.person, color: Color(0xFFFFFFFF), size: 20),
+                child: Text(
+                  'YOU',
+                  style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 radius: 16,
               ),
             ),
