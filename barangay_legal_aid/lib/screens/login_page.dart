@@ -84,35 +84,36 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login to Legal Aid'),
-        backgroundColor: Color(0xFF99272D),
-        foregroundColor: Color(0xFFFFFFFF),
-        elevation: 0,
       ),
-      body: Container(
-        color: Color(0xFFFFFFFF),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildLogo(),
-                SizedBox(height: 40),
-                _buildEmailField(),
-                SizedBox(height: 20),
-                _buildPasswordField(),
-                SizedBox(height: 15),
-                _buildRememberMeCheckbox(),
-                SizedBox(height: 25),
-                _buildLoginButton(),
-                SizedBox(height: 20),
-                _buildDivider(),
-                SizedBox(height: 20),
-                _buildSignupLink(),
-                SizedBox(height: 15),
-                _buildForgotPasswordLink(),
-              ],
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 480),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildLogo(),
+                    SizedBox(height: 32),
+                    _buildEmailField(),
+                    SizedBox(height: 16),
+                    _buildPasswordField(),
+                    SizedBox(height: 8),
+                    _buildRememberMeCheckbox(),
+                    SizedBox(height: 20),
+                    _buildLoginButton(),
+                    SizedBox(height: 16),
+                    _buildDivider(),
+                    SizedBox(height: 16),
+                    _buildSignupLink(),
+                    SizedBox(height: 8),
+                    _buildForgotPasswordLink(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -154,17 +155,16 @@ class _LoginPageState extends State<LoginPage> {
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        labelText: 'Email Address',
-        prefixIcon: Icon(Icons.email, color: Color(0xFF36454F)),
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Color(0xFFFFFFFF),
+        labelText: 'Email address',
+        hintText: 'you@example.com',
+        prefixIcon: Icon(Icons.email_outlined),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter your email';
         }
-        if (!value.contains('@') || !value.contains('.')) {
+        final emailRegex = RegExp(r"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        if (!emailRegex.hasMatch(value)) {
           return 'Please enter a valid email address';
         }
         return null;
@@ -178,19 +178,15 @@ class _LoginPageState extends State<LoginPage> {
       obscureText: _obscurePassword,
       decoration: InputDecoration(
         labelText: 'Password',
-        prefixIcon: Icon(Icons.lock, color: Color(0xFF36454F)),
+        prefixIcon: Icon(Icons.lock_outline),
         suffixIcon: IconButton(
           icon: Icon(
             _obscurePassword ? Icons.visibility : Icons.visibility_off,
-            color: Color(0xFF36454F),
           ),
           onPressed: () {
             setState(() => _obscurePassword = !_obscurePassword);
           },
         ),
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Color(0xFFFFFFFF),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -212,9 +208,8 @@ class _LoginPageState extends State<LoginPage> {
           onChanged: (value) {
             setState(() => _rememberMe = value ?? false);
           },
-          activeColor: Color(0xFF99272D),
         ),
-        Text('Remember me', style: TextStyle(color: Color(0xFF36454F))),
+        Text('Remember me'),
         Spacer(),
       ],
     );
@@ -223,25 +218,18 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginButton() {
     return ElevatedButton(
       onPressed: _isLoading ? null : _submitForm,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFF99272D),
-        padding: EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
       child: _isLoading
           ? SizedBox(
               height: 20,
               width: 20,
               child: CircularProgressIndicator(
-                color: Color(0xFFFFFFFF),
+                color: Colors.white,
                 strokeWidth: 2,
               ),
             )
           : Text(
               'Login',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.labelLarge,
             ),
     );
   }

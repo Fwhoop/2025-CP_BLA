@@ -66,7 +66,6 @@ class ChatProvider with ChangeNotifier {
 
     _currentSession!.messages.add(message);
     
-    // Chat title
     if (_currentSession!.messages.length == 1 && isUser) {
       _currentSession!.title = content.length > 30 ? '${content.substring(0, 30)}...' : content;
       

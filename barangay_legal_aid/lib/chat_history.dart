@@ -4,8 +4,9 @@ import 'package:barangay_legal_aid/chat_provider.dart';
 
 class ChatHistorySidebar extends StatelessWidget {
   final ChatProvider chatProvider;
+  final VoidCallback? onToggle;
 
-  const ChatHistorySidebar({required this.chatProvider});
+  const ChatHistorySidebar({required this.chatProvider, this.onToggle});
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,12 @@ class ChatHistorySidebar extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                if (onToggle != null)
+                  IconButton(
+                    icon: Icon(Icons.chevron_left, color: Color(0xFFFFFFFF)),
+                    tooltip: 'Hide',
+                    onPressed: onToggle,
+                  ),
                 IconButton(
                   icon: Icon(Icons.add, color: Color(0xFFFFFFFF)),
                   onPressed: chatProvider.createNewSession,

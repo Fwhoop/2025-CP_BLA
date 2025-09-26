@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:barangay_legal_aid/services/auth_service.dart';
-import 'package:barangay_legal_aid/models/user_model.dart'; // Add this import
+import 'package:barangay_legal_aid/models/user_model.dart';
 
 class AuthTester extends StatefulWidget {
   const AuthTester({super.key});
@@ -14,7 +14,7 @@ class _AuthTesterState extends State<AuthTester> {
   final AuthService _authService = AuthService();
   String _authStatus = 'Not checked';
   Map<String, String> _userData = {};
-  User? _currentUser; // Store the current user
+  User? _currentUser; 
 
   Future<void> _checkAuthStatus() async {
     final isLoggedIn = await _authService.isLoggedIn();
@@ -38,17 +38,17 @@ class _AuthTesterState extends State<AuthTester> {
   }
 
   Future<void> _simulateLogin() async {
-    final User? user = await _authService.login(  // Fixed: Use User? instead of var/success
+    final User? user = await _authService.login(  
       email: 'test@legalaid.com',
       password: 'test123',
       rememberMe: true,
     );
     
     setState(() {
-      _authStatus = user != null ? 'Login Successful' : 'Login Failed';  // Fixed condition
+      _authStatus = user != null ? 'Login Successful' : 'Login Failed';  
     });
     
-    if (user != null) {  // Fixed condition
+    if (user != null) {  
       await _getUserData();
       await _getCurrentUser();
     }
@@ -88,7 +88,7 @@ class _AuthTesterState extends State<AuthTester> {
             SizedBox(height: 20),
             _buildUserDataCard(),
             SizedBox(height: 20),
-            _buildCurrentUserCard(), // Add this card
+            _buildCurrentUserCard(), 
             SizedBox(height: 20),
             _buildActionButtons(),
           ],
@@ -217,7 +217,6 @@ class _AuthTesterState extends State<AuthTester> {
           child: Text('Refresh Status', style: GoogleFonts.roboto()),
         ),
         SizedBox(height: 10),
-        // Add test buttons for different roles
         Wrap(
           spacing: 8,
           children: [

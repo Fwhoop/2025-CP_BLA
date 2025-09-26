@@ -103,7 +103,6 @@ class AppDatabase {
   }
 
   static Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // Implement migrations when bumping _dbVersion
   }
 }
 

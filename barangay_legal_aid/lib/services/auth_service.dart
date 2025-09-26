@@ -1,9 +1,7 @@
-// Auth utilities for demo and local storage
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:barangay_legal_aid/models/user_model.dart';
 
 class AuthService {
-  // Demo users (replace with API in production)
   final Map<String, Map<String, dynamic>> _demoUsers = {
     'user@legalaid.com': {
       'password': 'password123',
@@ -56,12 +54,10 @@ class AuthService {
 
     final prefs = await SharedPreferences.getInstance();
     
-    // Stop if email already exists
     if (_demoUsers.containsKey(email) || await _isEmailRegistered(prefs, email)) {
       throw Exception('Email already registered');
     }
 
-    // Save user locally
     await prefs.setString('firstName', firstName);
     await prefs.setString('lastName', lastName);
     await prefs.setString('email', email);
@@ -90,7 +86,6 @@ class AuthService {
 
     final prefs = await SharedPreferences.getInstance();
     
-    // Try demo users
     if (_demoUsers.containsKey(email) && _demoUsers[email]!['password'] == password) {
       final userData = _demoUsers[email]!;
       final user = User(
@@ -107,7 +102,6 @@ class AuthService {
       return user;
     }
 
-    // Try stored user
     final storedEmail = prefs.getString('email');
     final storedPassword = prefs.getString('password');
     
@@ -146,7 +140,6 @@ class AuthService {
     final email = prefs.getString('currentUserEmail') ?? prefs.getString('email');
     if (email == null) return null;
 
-    // Check demo users
     if (_demoUsers.containsKey(email)) {
       final userData = _demoUsers[email]!;
       return User(
@@ -160,7 +153,6 @@ class AuthService {
       );
     }
 
-    // Return stored user
     return User(
       id: email.hashCode.toString(),
       email: email,
@@ -191,7 +183,6 @@ class AuthService {
       }
     }
     
-    // Auto-logout if not remembered and session expired
     await prefs.setBool('isLoggedIn', false);
     return false;
   }

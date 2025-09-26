@@ -112,45 +112,47 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Account'),
-        backgroundColor: Color(0xFF99272D),
-        foregroundColor: Color(0xFFFFFFFF),
-        elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pushReplacementNamed(context, '/login');
           },
+          tooltip: 'Back to Login',
         ),
       ),
-      body: Container(
-        color: Color(0xFFFFFFFF),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildLogo(),
-                SizedBox(height: 30),
-                _buildNameFields(),
-                SizedBox(height: 20),
-                _buildEmailField(),
-                SizedBox(height: 20),
-                _buildPasswordField(),
-                SizedBox(height: 20),
-                _buildConfirmPasswordField(),
-                SizedBox(height: 20),
-                _buildPhoneField(),
-                SizedBox(height: 20),
-                _buildAddressField(),
-                SizedBox(height: 20),
-                _buildBarangayDropdown(),
-                SizedBox(height: 30),
-                _buildSignupButton(),
-                SizedBox(height: 20),
-                _buildLoginLink(),
-              ],
+      body: SafeArea(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 640),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildLogo(),
+                    SizedBox(height: 24),
+                    _buildNameFields(),
+                    SizedBox(height: 16),
+                    _buildEmailField(),
+                    SizedBox(height: 16),
+                    _buildPasswordField(),
+                    SizedBox(height: 16),
+                    _buildConfirmPasswordField(),
+                    SizedBox(height: 16),
+                    _buildPhoneField(),
+                    SizedBox(height: 16),
+                    _buildAddressField(),
+                    SizedBox(height: 16),
+                    _buildBarangayDropdown(),
+                    SizedBox(height: 24),
+                    _buildSignupButton(),
+                    SizedBox(height: 16),
+                    _buildLoginLink(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -193,11 +195,8 @@ class _SignupPageState extends State<SignupPage> {
           child: TextFormField(
             controller: _firstNameController,
             decoration: InputDecoration(
-              labelText: 'First Name',
-              prefixIcon: Icon(Icons.person, color: Color(0xFF36454F)),
-              border: OutlineInputBorder(),
-              filled: true,
-              fillColor: Color(0xFFFFFFFF),
+              labelText: 'First name',
+              prefixIcon: Icon(Icons.person_outline),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -212,10 +211,8 @@ class _SignupPageState extends State<SignupPage> {
           child: TextFormField(
             controller: _lastNameController,
             decoration: InputDecoration(
-              labelText: 'Last Name',
-              border: OutlineInputBorder(),
-              filled: true,
-              fillColor: Color(0xFFFFFFFF),
+              labelText: 'Last name',
+              prefixIcon: Icon(Icons.person_outline),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -234,17 +231,16 @@ class _SignupPageState extends State<SignupPage> {
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        labelText: 'Email Address',
-        prefixIcon: Icon(Icons.email, color: Color(0xFF36454F)),
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Color(0xFFFFFFFF),
+        labelText: 'Email address',
+        hintText: 'you@example.com',
+        prefixIcon: Icon(Icons.email_outlined),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter your email';
         }
-        if (!value.contains('@')) {
+        final emailRegex = RegExp(r"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        if (!emailRegex.hasMatch(value)) {
           return 'Please enter a valid email';
         }
         return null;
@@ -258,19 +254,15 @@ class _SignupPageState extends State<SignupPage> {
       obscureText: _obscurePassword,
       decoration: InputDecoration(
         labelText: 'Password',
-        prefixIcon: Icon(Icons.lock, color: Color(0xFF36454F)),
+        prefixIcon: Icon(Icons.lock_outline),
         suffixIcon: IconButton(
           icon: Icon(
             _obscurePassword ? Icons.visibility : Icons.visibility_off,
-            color: Color(0xFF36454F),
           ),
           onPressed: () {
             setState(() => _obscurePassword = !_obscurePassword);
           },
         ),
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Color(0xFFFFFFFF),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -290,19 +282,15 @@ class _SignupPageState extends State<SignupPage> {
       obscureText: _obscureConfirmPassword,
       decoration: InputDecoration(
         labelText: 'Confirm Password',
-        prefixIcon: Icon(Icons.lock_outline, color: Color(0xFF36454F)),
+        prefixIcon: Icon(Icons.lock_outline),
         suffixIcon: IconButton(
           icon: Icon(
             _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
-            color: Color(0xFF36454F),
           ),
           onPressed: () {
             setState(() => _obscureConfirmPassword = !_obscureConfirmPassword);
           },
         ),
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Color(0xFFFFFFFF),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -318,11 +306,8 @@ class _SignupPageState extends State<SignupPage> {
       controller: _phoneController,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
-        labelText: 'Phone Number',
-        prefixIcon: Icon(Icons.phone, color: Color(0xFF36454F)),
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Color(0xFFFFFFFF),
+        labelText: 'Phone number',
+        prefixIcon: Icon(Icons.phone_outlined),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -340,11 +325,8 @@ class _SignupPageState extends State<SignupPage> {
     return TextFormField(
       controller: _addressController,
       decoration: InputDecoration(
-        labelText: 'Complete Address',
-        prefixIcon: Icon(Icons.home, color: Color(0xFF36454F)),
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Color(0xFFFFFFFF),
+        labelText: 'Complete address',
+        prefixIcon: Icon(Icons.home_outlined),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -359,16 +341,13 @@ class _SignupPageState extends State<SignupPage> {
     return DropdownButtonFormField<String>(
       value: _selectedBarangay,
       decoration: InputDecoration(
-        labelText: 'Select Barangay',
-        prefixIcon: Icon(Icons.location_on, color: Color(0xFF36454F)),
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Color(0xFFFFFFFF),
+        labelText: 'Select barangay',
+        prefixIcon: Icon(Icons.location_on_outlined),
       ),
       items: _barangays.map((String barangay) {
         return DropdownMenuItem<String>(
           value: barangay,
-          child: Text(barangay, style: TextStyle(color: Color(0xFF36454F))),
+          child: Text(barangay),
         );
       }).toList(),
       onChanged: (String? newValue) {
@@ -386,25 +365,18 @@ class _SignupPageState extends State<SignupPage> {
   Widget _buildSignupButton() {
     return ElevatedButton(
       onPressed: _isLoading ? null : _submitForm,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFF99272D),
-        padding: EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
       child: _isLoading
           ? SizedBox(
               height: 20,
               width: 20,
               child: CircularProgressIndicator(
-                color: Color(0xFFFFFFFF),
+                color: Colors.white,
                 strokeWidth: 2,
               ),
             )
           : Text(
               'Create Account',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.labelLarge,
             ),
     );
   }
@@ -413,7 +385,7 @@ class _SignupPageState extends State<SignupPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Already have an account?', style: TextStyle(color: Color(0xFF36454F))),
+        Text('Already have an account?'),
         SizedBox(width: 5),
         TextButton(
           onPressed: () {
@@ -421,10 +393,7 @@ class _SignupPageState extends State<SignupPage> {
           },
           child: Text(
             'Sign In',
-            style: TextStyle(
-              color: Color(0xFF99272D),
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ],

@@ -84,7 +84,6 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             child: Row(
               children: [
-                // Replaced icon with text label
                 Container(
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
@@ -118,7 +117,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Replaced icon with text
                         Container(
                           padding: EdgeInsets.all(16),
                           decoration: BoxDecoration(
@@ -248,36 +246,46 @@ class ChatBubble extends StatelessWidget {
             SizedBox(width: 8),
           ],
           Expanded(
-            child: Column(
-              crossAxisAlignment: message.isUser
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: message.isUser
-                        ? Color(0xFF99272D)
-                        : Color(0xFF36454F),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    message.content,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFFFFFFFF),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final maxBubbleWidth = constraints.maxWidth * 0.85;
+                return Column(
+                  crossAxisAlignment: message.isUser
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(
+                        maxWidth: maxBubbleWidth.clamp(200.0, 600.0),
+                        minWidth: 120,
+                      ),
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: message.isUser
+                            ? Color(0xFF99272D)
+                            : Color(0xFF36454F),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        message.content,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFFFFFFFF),
+                        ),
+                        softWrap: true,
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  '${message.timestamp.hour}:${message.timestamp.minute.toString().padLeft(2, '0')}',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF36454F).withOpacity(0.7),
-                  ),
-                ),
-              ],
+                    SizedBox(height: 4),
+                    Text(
+                      '${message.timestamp.hour}:${message.timestamp.minute.toString().padLeft(2, '0')}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF36454F).withOpacity(0.7),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
           if (message.isUser) ...[

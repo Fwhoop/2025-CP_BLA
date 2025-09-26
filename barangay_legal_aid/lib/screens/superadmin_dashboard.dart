@@ -14,9 +14,6 @@ class SuperAdminDashboard extends StatelessWidget {
           TextButton(
             onPressed: () async {
               await AuthService().logout();
-              // Ensure we exit dashboard stack completely
-              // and land on the login page
-              // ignore: use_build_context_synchronously
               Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
             },
             child: Text(
@@ -32,114 +29,96 @@ class SuperAdminDashboard extends StatelessWidget {
       body: Container(
         color: Color(0xFFFFFFFF),
         padding: EdgeInsets.all(16),
-        child: GridView.count(
-          crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          children: [
-            _buildDashboardCard(
-              title: 'Barangays',
-              icon: '🏢',
-              description: 'Manage all barangays',
-              color: Color(0xFF99272D),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 1600),
+            child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 280,
+            crossAxisSpacing: 14,
+            mainAxisSpacing: 14,
+            childAspectRatio: 1.1,
+          ),
+          itemCount: 6,
+          itemBuilder: (context, index) {
+            final items = [
+              {
+                'title': 'Barangays',
+                'icon': '🏢',
+                'desc': 'Manage all barangays',
+                'color': Color(0xFF99272D),
+                'route': FeaturePlaceholder(
+                  title: 'Barangays',
+                  description: 'Manage all barangays',
+                ),
+              },
+              {
+                'title': 'Admins',
+                'icon': '👑',
+                'desc': 'Manage administrators',
+                'color': Color(0xFF36454F),
+                'route': FeaturePlaceholder(
+                  title: 'Admins',
+                  description: 'Manage administrators',
+                ),
+              },
+              {
+                'title': 'System',
+                'icon': '⚙️',
+                'desc': 'System configuration',
+                'color': Color(0xFF99272D),
+                'route': FeaturePlaceholder(
+                  title: 'System Configuration',
+                  description: 'Configure system-wide settings',
+                ),
+              },
+              {
+                'title': 'Backup',
+                'icon': '💾',
+                'desc': 'Data management',
+                'color': Color(0xFF36454F),
+                'route': FeaturePlaceholder(
+                  title: 'Backup',
+                  description: 'Manage data backups',
+                ),
+              },
+              {
+                'title': 'Analytics',
+                'icon': '📈',
+                'desc': 'System-wide analytics',
+                'color': Color(0xFF99272D),
+                'route': FeaturePlaceholder(
+                  title: 'Analytics',
+                  description: 'View system-wide analytics',
+                ),
+              },
+              {
+                'title': 'Logs',
+                'icon': '📋',
+                'desc': 'System logs',
+                'color': Color(0xFF36454F),
+                'route': FeaturePlaceholder(
+                  title: 'Logs',
+                  description: 'View system logs',
+                ),
+              },
+            ];
+            final item = items[index];
+            return _buildDashboardCard(
+              title: item['title'] as String,
+              icon: item['icon'] as String,
+              description: item['desc'] as String,
+              color: item['color'] as Color,
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => FeaturePlaceholder(
-                      title: 'Barangays',
-                      description: 'Manage all barangays',
-                    ),
-                  ),
+                  MaterialPageRoute(builder: (_) => item['route'] as Widget),
                 );
               },
+            );
+          },
             ),
-            _buildDashboardCard(
-              title: 'Admins',
-              icon: '👑',
-              description: 'Manage administrators',
-              color: Color(0xFF36454F),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => FeaturePlaceholder(
-                      title: 'Admins',
-                      description: 'Manage administrators',
-                    ),
-                  ),
-                );
-              },
-            ),
-            _buildDashboardCard(
-              title: 'System',
-              icon: '⚙️',
-              description: 'System configuration',
-              color: Color(0xFF99272D),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => FeaturePlaceholder(
-                      title: 'System Configuration',
-                      description: 'Configure system-wide settings',
-                    ),
-                  ),
-                );
-              },
-            ),
-            _buildDashboardCard(
-              title: 'Backup',
-              icon: '💾',
-              description: 'Data management',
-              color: Color(0xFF36454F),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => FeaturePlaceholder(
-                      title: 'Backup',
-                      description: 'Manage data backups',
-                    ),
-                  ),
-                );
-              },
-            ),
-            _buildDashboardCard(
-              title: 'Analytics',
-              icon: '📈',
-              description: 'System-wide analytics',
-              color: Color(0xFF99272D),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => FeaturePlaceholder(
-                      title: 'Analytics',
-                      description: 'View system-wide analytics',
-                    ),
-                  ),
-                );
-              },
-            ),
-            _buildDashboardCard(
-              title: 'Logs',
-              icon: '📋',
-              description: 'System logs',
-              color: Color(0xFF36454F),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => FeaturePlaceholder(
-                      title: 'Logs',
-                      description: 'View system logs',
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -153,27 +132,27 @@ class SuperAdminDashboard extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Card(
-      elevation: 4,
+      elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: EdgeInsets.all(6),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 icon,
-                style: TextStyle(fontSize: 40),
+                style: TextStyle(fontSize: 30),
               ),
               SizedBox(height: 8),
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: color,
                 ),
@@ -187,6 +166,8 @@ class SuperAdminDashboard extends StatelessWidget {
                   color: Colors.grey[600],
                 ),
                 textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
